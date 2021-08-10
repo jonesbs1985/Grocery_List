@@ -10,6 +10,7 @@ const app = express();
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8080;
 
+// HTTP
 let http = require("http");
 let server = http.Server(app);
 
