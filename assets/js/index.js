@@ -46,28 +46,32 @@ $(function () {
             cancel: true,
             confirm: "Yes",
           },
-        }).then(function () {
-          $.ajax({
-            url: "api/list/" + name,
-            type: "DELETE",
-            data: { name: $(this).val() },
-          }).done(function () {
-            swal({
-              title: "Success",
-              text: "The item has been removed from your list.",
-              icon: "success",
-            })
-              .then(() => {
-                window.location = "index.html";
+        }).then(function (result) {
+          if (result) {
+            $.ajax({
+              url: "api/list/" + name,
+              type: "DELETE",
+              data: { name: $(this).val() },
+            }).done(function () {
+              swal({
+                title: "Success",
+                text: "The item has been removed from your list.",
+                icon: "success",
               })
-              .fail(function () {
-                swal({
-                  title: "Error",
-                  text: "Item not found",
-                  icon: "error",
+                .then(() => {
+                  window.location = "index.html";
+                })
+                .fail(function () {
+                  swal({
+                    title: "Error",
+                    text: "Item not found",
+                    icon: "error",
+                  });
                 });
-              });
-          });
+            });
+          } else {
+            console.log(`dialog was dismissed by ${result.dismiss}`);
+          }
         });
       });
 
