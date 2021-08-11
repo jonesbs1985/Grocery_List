@@ -35,6 +35,7 @@ app.use("/assets/js", express.static("assets/js"));
 
 // load routers
 app.use("/", require("./server/routes/router"));
+app.use("/index.html", require("./server/routes/router"));
 
 server.listen(PORT, () => {
   console.log(`Grocery List server is running...`);

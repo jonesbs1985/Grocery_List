@@ -27,7 +27,6 @@ route.get("/add.html", services.add);
 // API LIST
 route.post("/api/list", controller.createList);
 route.get("/api/list", controller.findList);
-route.put("/api/users/:id", controller.update);
 route.delete("/api/list/:name", controller.deleteList);
 
 // API CATEGORY

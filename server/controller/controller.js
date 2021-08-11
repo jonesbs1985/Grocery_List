@@ -1,6 +1,8 @@
 var listDB = require("../model/listModel");
 var categoriesDB = require("../model/categoryModel");
 var itemsDB = require("../model/itemModel");
+// const { MongoClient } = require("mongodb");
+// const client = new MongoClient(process.env.MONGO_URI);
 
 // ------------LIST RELATED----------------
 // add item to list
@@ -46,15 +48,12 @@ exports.findList = (req, res) => {
     });
 };
 
-// update a new identified user by user id
-exports.update = (req, res) => {};
-
 // delete item from list based on name
 exports.deleteList = (req, res) => {
   const name = req.params.name;
 
   listDB
-    .findOneAndDelete(name)
+    .deleteOne({ name: name })
     .then((data) => {
       if (!data) {
         res.status(404).send({

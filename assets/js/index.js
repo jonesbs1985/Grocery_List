@@ -32,12 +32,43 @@ $(function () {
       let tdName = $("<td>").html(results[i].name);
       // create cell3 with remove button
       let tdBtn = $("<td>").html(
-        '<input type="button" id="removeBtn" class="btn btn-danger" value="Remove">'
+        '<input type="button" id="removeBtn" class="btn btn-danger delete" value="Remove">'
       );
 
       // connect button to click event handler
       tdBtn.on("click", function () {
-        removeItem(results[i].name);
+        var name = results[i].name;
+        swal({
+          title: "Confirmation",
+          text: "Are you sure you want to remove this item from your list?",
+          icon: "warning",
+          buttons: {
+            cancel: true,
+            confirm: "Yes",
+          },
+        }).then(function () {
+          $.ajax({
+            url: "api/list/" + name,
+            type: "DELETE",
+            data: { name: $(this).val() },
+          }).done(function () {
+            swal({
+              title: "Success",
+              text: "The item has been removed from your list.",
+              icon: "success",
+            })
+              .then(() => {
+                window.location = "index.html";
+              })
+              .fail(function () {
+                swal({
+                  title: "Error",
+                  text: "Item not found",
+                  icon: "error",
+                });
+              });
+          });
+        });
       });
 
       // assemble cells in the row
@@ -50,36 +81,3 @@ $(function () {
     }
   });
 });
-
-function removeItem(name) {
-  swal({
-    title: "Confirmation",
-    text: "Are you sure you want to remove this item from your list?",
-    icon: "warning",
-    buttons: {
-      cancel: true,
-      confirm: "Yes",
-    },
-  }).then(function () {
-    $.ajax({
-      url: "api/list/" + name,
-      type: "DELETE",
-    }).done(function (name) {
-      swal({
-        title: "Success",
-        text: "The item has been removed from your list.",
-        icon: "success",
-      })
-        .then(() => {
-          window.location = "index.html";
-        })
-        .fail(function () {
-          swal({
-            title: "Error",
-            text: "Item not found",
-            icon: "error",
-          });
-        });
-    });
-  });
-}
